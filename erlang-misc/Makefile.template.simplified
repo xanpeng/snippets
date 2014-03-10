@@ -1,0 +1,16 @@
+.SUFFIXES: .erl .beam
+
+.erl.beam:
+	erlc -W $<
+
+ERL = erl -boot start_clean
+
+MODS = module1 module2 module3
+
+all: compile
+	${ERL} -pa Dir1 -S application1 start Arg1 Arg2
+
+compile: ${MODS:%=%.beam}
+
+clean:
+	rm -rf *.beam erl_crash.dump

@@ -1,0 +1,12 @@
+cscope.files
+cscope.out
+*.swp
+*.swo
+*.pyc
+*.o
+test_2pc
+test_paxos
+*~
+build/*
+.cproject
+.project

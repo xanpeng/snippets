@@ -1,0 +1,7 @@
+1 gcc -o example1 example1.c example1_driver.c erl_comm.c  
+2 erl
+    c(example1).
+    example1:start(). % `ps aux | grep example1` shows "./example1" is running.  
+    example1:twice(20).
+    example1:stop(). % ".example1" is stopped.
+
