@@ -9,8 +9,6 @@
 #include <Poco/Util/OptionException.h>
 
 #include <muduo/base/Logging.h>
-#include <muduo/base/Logging.h>
-
 
 using Poco::Util::Option;
 using Poco::Util::OptionSet;
