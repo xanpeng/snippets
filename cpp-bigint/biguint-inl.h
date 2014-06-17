@@ -62,24 +62,28 @@ inline bool BigUint::operator>=(const BigUint &x) const {
 }
 
 BigUint BigUint::operator+(const BigUint &x) const {
-  (void)x;
-  return BigUint();
+  // TODO
+  return NULL;
 }
 
 BigUint BigUint::operator-(const BigUint &x) const {
-  return operator+(x);
+  // TODO
+  return NULL;
 }
 
 BigUint BigUint::operator*(const BigUint &x) const {
-  return operator+(x);
+  // TODO
+  return NULL;
 }
 
 BigUint BigUint::operator/(const BigUint &x) const {
-  return operator+(x);
+  // TODO
+  return NULL;
 }
 
 BigUint BigUint::operator%(const BigUint &x) const {
-  return operator+(x);
+  // TODO
+  return NULL;
 }
 
 inline void BigUint::ConstructFromString(const std::string &s) {
