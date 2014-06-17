@@ -1,5 +1,9 @@
 #!/bin/sh
 
+#
+# copy 'system files' from one linux box to another
+#
+
 declare -a dirs_to_rsync=("/bin" "/sbin" "/lib" "/lib64" "/usr/bin" "/usr/sbin" "/usr/lib" "/usr/lib64" "/usr/local/bin" "/usr/local/sbin" "/usr/local/lib" "/usr/local/lib64")
 
 if [ "$#" -ne 1 ]; then
