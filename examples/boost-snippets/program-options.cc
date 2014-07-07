@@ -11,8 +11,8 @@ int main(int argc, char *argv[]) {
   try {
     po::options_description desc("Allowed options");
     desc.add_options()
-      ("help", "show this help message")
-      ("compression", po::value<int>()->required(), "set compression level");
+      ("help,h", "show this help message")
+      ("compression,c", po::value<int>()->required(), "set compression level");
 
     po::variables_map vm;
     po::store(po::parse_command_line(argc, argv, desc), vm);
