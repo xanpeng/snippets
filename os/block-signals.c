@@ -47,6 +47,11 @@ static void block_signals(const int *siglist, sigset_t *sigset, sigset_t *old_si
   assert(ret == 0);
 }
 
+static void restore_sigset(const sigset_t *old_sigset) {
+  int ret = pthread_sigmask(SIG_SETMASK, old_sigset, NULL);
+  assert(ret == 0);
+}
+
 int main() {
   pthread_t thread;
   sigset_t sigset;
