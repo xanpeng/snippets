@@ -55,11 +55,12 @@ static void restore_sigset(const sigset_t *old_sigset) {
 int main() {
   pthread_t thread;
   sigset_t sigset;
+  sigset_t old_sigset;
   int s;
 
   // Block SIGQUIT and SIGUSR1; other threads created by main() will inherit a copy of the signal mask.
   int siglist[] = { SIGQUIT, SIGUSR1, 0 };
-  block_signals(siglist, &sigset, NULL); // signals of current thread (main thread) are blocked
+  block_signals(siglist, &sigset, &old_sigset); // signals of current thread (main thread) are blocked
 
   // Child thread's SIGQUIT+SIGUSR1 are blocked inheritly
   s = pthread_create(&thread, NULL, &sig_thread, (void *) &sigset);
@@ -68,4 +69,5 @@ int main() {
   // Main thread carries on to create other threads and/or do other work
 
   pause();
+  restore_sigset(&old_sigset);
 }
