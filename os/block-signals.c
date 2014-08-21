@@ -53,7 +53,7 @@ int main() {
   int s;
 
   // Block SIGQUIT and SIGUSR1; other threads created by main() will inherit a copy of the signal mask.
-  int siglist[2] = { SIGQUIT, SIGUSR1 };
+  int siglist[] = { SIGQUIT, SIGUSR1, 0 };
   block_signals(siglist, &sigset, NULL); // signals of current thread (main thread) are blocked
 
   // Child thread's SIGQUIT+SIGUSR1 are blocked inheritly
