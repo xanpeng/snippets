@@ -72,7 +72,7 @@ int main() {
   ring.AddNode(std::make_pair("cache2.example.com", std::set<std::string>()));
   ring.AddNode(std::make_pair("cache3.example.com", std::set<std::string>()));
 
-  std::vector<std::string> fruits = {"culinary", "lilium", "apple", "pear", "banana", "orange", };
+  std::vector<std::string> fruits {"culinary", "lilium", "apple", "pear", "banana", "orange", };
   // write
   for (std::string f : fruits) {
     chash::Node& node = const_cast<chash::Node&>(ring.GetNode(f));
