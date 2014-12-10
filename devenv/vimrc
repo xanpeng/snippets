@@ -1,0 +1,171 @@
+"
+" ln -s ~/github/dotfiles/.vimrc ~/.vimrc
+"
+set shell=/bin/bash       "if fish, taglist & vundle will fail
+set showcmd
+set backspace=eol,start,indent
+set fileencodings=ucs-bom,utf-8,gbk,big5
+set completeopt=longest,menu
+set display=lastline      "set non-linewise display
+set nocompatible          "disable VI compatible mode
+set autochdir             "auto change current directory
+set sessionoptions=curdir "use absolute paths in sessions
+ 
+set ruler
+set wildmenu
+set title       "dynamic title
+set nu          "display line number
+ 
+set magic       "enbale magic matching
+set showmatch   "show matching bracets
+set ignorecase  "ignore case when search things
+set smartcase
+set hlsearch
+set incsearch
+ 
+set autoindent
+set smartindent
+set tabstop=2
+set shiftwidth=2
+set shiftround
+set smarttab
+set expandtab
+set softtabstop=2
+"set textwidth=79
+"set colorcolumn=80
+"set auto-formatting
+set formatoptions+=mM
+set cinoptions=:0,l1,t0,g0 "config c-indenting
+filetype plugin indent on
+ 
+autocmd FileType mail set textwidth=72       "set textwidth for mail
+autocmd FileType python set et sta ts=4 sw=4 "use soft tabs for python
+ 
+syntax enable
+syntax on
+ 
+"""
+""" Vundle
+"""
+" :PluginList          - list configured bundles
+" :PluginInstall(!)    - install(update) bundles
+" :PluginSearch(!) foo - search(or refresh cache first) for foo
+" :PluginClean(!)      - confirm(or auto-approve) removal of unused bundles
+" NOTE: comments after Bundle command are not allowed..
+set nocompatible
+filetype off
+ 
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+ 
+"" vundle howto: plugin on GitHub repo
+" let Vundle manage Vundle, required
+Plugin 'gmarik/Vundle.vim'
+ 
+"" vundle howto: plugin from http://vim-scripts.org/vim/scripts.html
+" show directory tree
+Plugin 'The-NERD-tree'
+let g:NERDTree_title="[NERD Tree]"
+let NERDTreeChDirMode=2 "auto change the root directory
+nmap tr :NERDTreeToggle<cr>
+ 
+" code completion for c/c++
+" cd YouCompleteMe && ./install.sh --clang-completer
+Plugin 'Valloric/YouCompleteMe'
+let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
+nnoremap gd :YcmCompleter GoToDefinition<CR>
+ 
+"" no need of minibufexpl, conflict with C-t which is better.
+" buffer explorer
+" Plugin 'fholgado/minibufexpl.vim'
+" let g:miniBufExplMapCTabSwitchBufs = 1
+" let g:miniBufExplMapWindowNavVim = 1
+" let g:miniBufExplMapWindowNavArrows = 1
+" let g:SuperTabRetainCompletionType=2
+" let g:SuperTabDefaultCompletionType="<C-X><C-O>"
+ 
+" Speedup vim motions
+" howto: \\s, search forward; \\F, search backward
+Plugin 'Lokaltog/vim-easymotion'
+" let g:EasyMotion_leader_key = '<Leader>'
+ 
+" code snippets (http://www.lucianofiandesio.com/vim-configuration-for-happy-java-coding)
+Plugin 'SirVer/ultisnips'
+" configure Ultisnips to access also your own snippets
+let g:UltiSnipsSnippetDirectories=["UltiSnips", "snippets"]
+ 
+" automatic closing of quotes, parenthesis, brackets, etc.
+Plugin 'Raimondi/delimitMate'
+"inoremap {} {<CR>}<ESC>O
+"inoremap {}; {<CR>};<ESC>O
+"inoremap () ()<LEFT>
+"inoremap (); ();<LEFT><LEFT>
+"inoremap ()) ()
+"inoremap "" ""<LEFT>
+"inoremap <> <><LEFT>
+"inoremap [] []<LEFT>
+ 
+" https://github.com/fatih/vim-go
+Plugin 'fatih/vim-go'
+ 
+" https://github.com/majutsushi/tagbar
+Plugin 'majutsushi/tagbar'
+nmap <F8> :TagbarToggle<CR>
+ 
+call vundle#end()
+filetype plugin indent on
+ 
+""" CTags + TagList
+"set tags=tags;               "auto finding
+"let Tlist_Sort_Type="name"   "sort by name
+"let Tlist_Use_Right_Window=0 "use right window
+"let Tlist_Auto_Update=1      "enable auto update
+"let Tlist_Compart_Format=1   "set compart format
+"let Tlist_Exit_OnlyWindow=1  "set exit by window
+"let Tlist_Enable_Fold_Column=0 "disable fold column
+"nnoremap <silent> <F2> :TlistToggle<CR>:TlistUpdate<CR>
+ 
+""" cscope
+set cscopetag           "use both cscope and ctag
+set cscopeverbose       "show msg when cscope db added
+set cscopetagorder=1    "use tags for definition search first
+set cscopequickfix=s-,g-,d-,c-,t-,e-,f-,i- "use quickfix window to show cscope results
+let autocscope_menus=0  "use my own cscope mappings
+nmap <C-_>s :cs find s <C-R>=expand("<cword>")<CR><CR>
+nmap <C-_>g :cs find g <C-R>=expand("<cword>")<CR><CR>
+nmap <C-_>c :cs find c <C-R>=expand("<cword>")<CR><CR>
+nmap <C-_>t :cs find t <C-R>=expand("<cword>")<CR><CR>
+nmap <C-_>e :cs find e <C-R>=expand("<cword>")<CR><CR>
+nmap <C-_>f :cs find f <C-R>=expand("<cfile>")<CR><CR>
+nmap <C-_>i :cs find i <C-R>=expand("<cfile>")<CR><CR>
+nmap <C-_>d :cs find d <C-R>=expand("<cword>")<CR><CR>
+ 
+""" tab navigation
+nnoremap tp :tabprevious<CR>
+nnoremap tn :tabnext<CR>
+nnoremap to :tabnew<CR>
+nnoremap tc :tabclose<CR>
+nnoremap gf <C-W>gf
+ 
+""" move among windows
+noremap <C-h> <C-W>h
+noremap <C-l> <C-W>l
+noremap <C-j> <C-W>j
+noremap <C-k> <C-W>k
+ 
+""" set up and down non-linewise
+noremap <Up> gk
+noremap <Down> gj
+ 
+""" use <space> to toggle fold
+"nnoremap <silent> <space> @=((foldclosed(line('.')) < 0)?'zc':'zo')<CR>
+nnoremap <silent> <space> i <RIGHT><ESC>
+ 
+inoremap ii <ESC> 
+ 
+nnoremap <S-f> :tabfirst<CR>
+nnoremap <S-h> gT
+nnoremap <S-l> gt
+nnoremap <C-t> :tabnew<CR>
+inoremap <C-t> <ESC>:tabnew<CR>
