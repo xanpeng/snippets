@@ -16,6 +16,9 @@ static PyObject* cos_func(PyObject* self, PyObject* args) {
 }
 
 static PyMethodDef CosMethods[] = {
+  // METH_VARARGS, METH_VARARGS|METH_KEYWORDS: calling convention, 
+  // METH_VARARGS: 期望python传入tuple
+  // METH_KEYWORDS: 期望python传入dict
   {"cos_func", cos_func, METH_VARARGS, "evaluate the cosine"},
   {NULL, NULL, 0, NULL}
 };
