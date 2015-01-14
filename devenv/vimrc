@@ -1,6 +1,3 @@
-"
-" ln -s ~/github/dotfiles/.vimrc ~/.vimrc
-"
 set shell=/bin/bash       "if fish, taglist & vundle will fail
 set showcmd
 set backspace=eol,start,indent
@@ -87,7 +84,7 @@ nnoremap gd :YcmCompleter GoToDefinition<CR>
  
 " Speedup vim motions
 " howto: \\s, search forward; \\F, search backward
-Plugin 'Lokaltog/vim-easymotion'
+" Plugin 'Lokaltog/vim-easymotion'
 " let g:EasyMotion_leader_key = '<Leader>'
  
 " code snippets (http://www.lucianofiandesio.com/vim-configuration-for-happy-java-coding)
@@ -112,6 +109,12 @@ Plugin 'fatih/vim-go'
 " https://github.com/majutsushi/tagbar
 Plugin 'majutsushi/tagbar'
 nmap <F8> :TagbarToggle<CR>
+
+Plugin 'nathanaelkane/vim-indent-guides'
+colorscheme default
+let g:indent_guides_enable_on_vim_startup = 1
+let g:indent_guides_start_level = 2
+set ts=2 sw=2 et
  
 call vundle#end()
 filetype plugin indent on
