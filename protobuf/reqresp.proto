@@ -1,0 +1,10 @@
+package reqresp;
+
+message CreateReq {
+  required uint32 magic = 1;
+  required uint32 op = 2;
+  required uint32 opsn = 3;
+  required uint32 volume_id = 4;
+  required uint32 chunk_size = 5; 
+}
+
