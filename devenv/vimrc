@@ -2,6 +2,7 @@ set shell=/bin/bash       "if fish, taglist & vundle will fail
 set showcmd
 set backspace=eol,start,indent
 set fileencodings=ucs-bom,utf-8,gbk,big5
+set encoding=utf-8
 set completeopt=longest,menu
 set display=lastline      "set non-linewise display
 set nocompatible          "disable VI compatible mode
