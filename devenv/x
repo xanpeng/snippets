@@ -1,0 +1,33 @@
+#!/bin/bash
+
+SOURCE_LOCATION="/Users/xan/workspace/project/" # trailing '/' needed
+REMOTE_LOCATION="root@xdev:~/project"
+
+# if [ "$#" -eq 1 ]; then
+#  subdir=$1
+#  SOURCE_LOCATION="/Users/xan/workspace/project/src/$subdir/"
+#  REMOTE_LOCATION="root@xdev:~/project/src/$subdir"
+# fi
+
+
+# -r: recursive for diretories
+# -a: archive,
+#   recursively,
+#   preserves symbolic links,
+#   preserves special and device files,
+#   preserves modification times
+#   preserves group, owner and permissions
+# -v: verbose
+# -z: compress transferring files
+# -P: --progress + --partial (resume interrupted transfers)
+# --delete: remove file in DEST which is not in SRC
+set -x
+# rsync -azP --exclude=.git --exclude=*.pyc --exclude=*.o $SOURCE_LOCATION $REMOTE_LOCATION # push mode 
+rsync -azP --exclude-from '/etc/rsynccodes-exclude.txt' $SOURCE_LOCATION $REMOTE_LOCATION # push mode 
+# rsync --delete -azP --exclude-from '/etc/rsynccodes-exclude.txt' $SOURCE_LOCATION $REMOTE_LOCATION # push mode 
+set +x
+
+# # cat /etc/rsynccodes-exclude.txt 
+# .git
+# *.pyc
+# *.o
