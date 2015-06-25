@@ -68,3 +68,11 @@ def name_level_map(level_or_name):
         else:
             return 'DEBUG'
     return GLOBAL_LEVEL_NAMES[level_or_name]
+
+# usage
+if __name__ == '__main__':
+    logger = log.get_logger(__name__)
+    logger.debug('hello')
+    log.set_global_loglevel(logging.DEBUG)
+    logger.debug('hello again')
+    
