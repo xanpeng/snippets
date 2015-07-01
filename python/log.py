@@ -4,7 +4,7 @@ import logging
 import logging.config
 
 default_logtofile = False
-default_logconf = None
+default_logconf = '/path/to/file'
 global_loglevel = logging.INFO
 
 GLOBAL_LEVEL_NAMES = {
@@ -24,18 +24,23 @@ GLOBAL_LEVEL_NAMES = {
 }
 
 
-def log_to_file(log_conf):
-    global default_logtofile, default_logconf
-    default_logtofile, default_logconf = True, log_conf
+def set_logtofile(logtofile=True):
+    global default_logtofile
+    default_logtofile = logtofile
 
 
-def get_logger(name):
+def set_logconf(log_conf):
+    global default_logconf
+    default_logconf = log_conf
+
+
+def get_logger(name=None):
     if not default_logtofile:
-        return get_debug_logger(name)
-    return get_file_logger(name)
+        return get_console_logger(None)  # 只用root logger，否则console logger在fileConfig()后失效
+    return get_file_logger(None)
 
 
-def get_debug_logger(name):
+def get_console_logger(name):
     logging.basicConfig()
     logger = logging.getLogger(name)
     logger.setLevel(global_loglevel)
@@ -45,7 +50,6 @@ def get_debug_logger(name):
 def get_file_logger(logger_name):
     logging.config.fileConfig(default_logconf)
     logger = logging.getLogger(logger_name)
-    logger.setLevel(global_loglevel)
     return logger
 
 
@@ -56,6 +60,7 @@ def set_global_loglevel(level):
     if level not in GLOBAL_LEVEL_NAMES:
         return
     global_loglevel = level
+    logging.root.setLevel(global_loglevel)
     for logger in logging.Logger.manager.loggerDict.itervalues():
         if not isinstance(logger, logging.PlaceHolder):
             logger.setLevel(global_loglevel)
