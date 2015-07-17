@@ -1,4 +1,5 @@
-## clone from https://github.com/nybuxtsui/Makefile/blob/master/Makefile
+### clone from https://github.com/nybuxtsui/Makefile/blob/master/Makefile
+### 一个通用makefile框架
 # ?= 如果不存在，则赋值
 # := 不展开变量
 # += 追加
