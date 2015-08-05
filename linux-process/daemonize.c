@@ -10,17 +10,16 @@
 #include <sys/stat.h>
 #include <sys/resource.h>
 
-/*
- * ref:
- * http://0pointer.de/public/systemd-man/daemon.html
- */
-int daemonize(int nochdir, int noclose) {
-  int   sig;
+// ref: http://0pointer.de/public/systemd-man/daemon.html
+int daemonize(int nochdir, int noclose) 
+{
+  int sig;
   pid_t pid;
   sigset_t set;
   struct rlimit limit;
 
-  if (!noclose) {
+  if (!noclose)
+  {
     /*
      * Close all open file descriptors except STDIN, STDOUT, STDERR,
      * This ensures that no accidentally passed file descriptor stays around
@@ -64,7 +63,6 @@ int daemonize(int nochdir, int noclose) {
   close(STDIN_FILENO);
   close(STDOUT_FILENO);
   close(STDERR_FILENO);
-
   if (open("/dev/null", O_RDONLY) == -1)
     return -1;
   if (open("/dev/null", O_WRONLY) == -1)
@@ -79,7 +77,8 @@ int daemonize(int nochdir, int noclose) {
    */
   umask(0);
 
-  if (!nochdir) {
+  if (!nochdir)
+  {
     /*
      * change the current directory to the root directory (/),
      * in order to avoid that the daemon involuntarily blocks
