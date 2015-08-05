@@ -6,7 +6,8 @@
 #include <unistd.h>
 #include <sys/stat.h>
 
-int pidfile(const char *file) {
+int pidfile(const char *file)
+{
   int  fd;
   int  flags;
   int  pidlen;
