@@ -119,9 +119,6 @@ int sock_set_reuse_port(int sockfd)
 
 int socket_set_tcp_nodelay(int sockfd)
 {
-  // used to disable nagle's algorithm to improve tcp/ip networks and 
-  // decrease the number of packets by waiting until an acknowledgment 
-  // of previous sent data is received to send the accumulated packets.
   int tcp_nodelay = 1;
   return setsockopt(sockfd, SOL_SOCKET, TCP_NODELAY, &tcp_nodelay, sizeof(tcp_nodelay));
 }
@@ -132,7 +129,6 @@ int socket_set_tcp_nopush(int sockfd)
 #ifdef TCP_NOPUSH
   return setsockopt(sockfd, SOL_SOCKET, TCP_NOPUSH, &tcp_nopush, sizeof(tcp_nopush));
 #elif defined(TCP_CORK)
-  // If set, don't send out partial frames
   return setsockopt(sockfd, SOL_SOCKET, TCP_CORK, &tcp_nopush, sizeof(tcp_nopush));
 #else
 # warning sock_set_tcp_nopush require TCP_NOPUSH or TCP_CORK
@@ -373,6 +369,9 @@ int psock_set_linger(sockpair_t* sp, int on, int sec)
   if (NULL == sp)
     return -1;
 
+  // When enabled, a close(2) or shutdown(2) will not return until all queued 
+  // messages for the socket have been successfully sent or the linger timeout 
+  // has been reached. (man 7 socket)
   struct linger lt;
   lt.l_onoff = on;
   lt.l_linger = sec;
@@ -384,11 +383,13 @@ int psock_set_linger(sockpair_t* sp, int on, int sec)
 
 int psock_set_tcp_nodelay(sockpair_t* sp, int on)
 {
+  // If set, disable the Nagle algorithm...This option is overridden by TCP_CORK... (man 7 tcp)
   return psock_int_option(sp, IPPROTO_TCP, TCP_NODELAY, on);
 }
 
 int psock_set_tcp_quickack(sockpair_t* sp, int on)
 {
+  // In quickack mode, acks are sent immediately (man 7 tcp)
   return psock_int_option(sp, IPPROTO_TCP, TCP_QUICKACK, on);
 }
 
@@ -411,12 +412,12 @@ int psock_set_nonblock(sockpair_t* sp, int on)
   return 0;
 }
 
-int psock_send_buffer(sockpair_t* sp, int size)
+int psock_set_send_buffer(sockpair_t* sp, int size)
 {
   return psock_int_option(sp, SOL_SOCKET, SO_SNDBUF, size);
 }
 
-int psock_recv_buffer(sockpair_t* sp, int size)
+int psock_set_recv_buffer(sockpair_t* sp, int size)
 {
   return psock_int_option(sp, SOL_SOCKET, SO_RCVBUF, size);
 }
