@@ -151,6 +151,9 @@ nnoremap tn :tabnext<CR>
 nnoremap to :tabnew<CR>
 nnoremap tc :tabclose<CR>
 nnoremap gf <C-W>gf
+nnoremap <S-f> :tabfirst<CR>  	" first tab
+nnoremap <S-h> gT		" previous tab
+nnoremap <S-l> gt		" next tab
  
 """ move among windows
 noremap <C-h> <C-W>h
@@ -159,17 +162,12 @@ noremap <C-j> <C-W>j
 noremap <C-k> <C-W>k
  
 """ set up and down non-linewise
-noremap <Up> gk
-noremap <Down> gj
+"noremap <Up> gk
+"noremap <Down> gj
  
 """ use <space> to toggle fold
 "nnoremap <silent> <space> @=((foldclosed(line('.')) < 0)?'zc':'zo')<CR>
-nnoremap <silent> <space> i <RIGHT><ESC>
+"nnoremap <silent> <space> i <RIGHT><ESC>
  
 inoremap ii <ESC> 
  
-nnoremap <S-f> :tabfirst<CR>
-nnoremap <S-h> gT
-nnoremap <S-l> gt
-nnoremap <C-t> :tabnew<CR>
-inoremap <C-t> <ESC>:tabnew<CR>
