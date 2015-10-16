@@ -1,3 +1,6 @@
+" related:
+" - http://dougblack.io/words/a-good-vimrc.html
+
 set shell=/bin/bash       "if fish, taglist & vundle will fail
 set showcmd
 set backspace=eol,start,indent
