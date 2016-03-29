@@ -1,0 +1,110 @@
+#!/bin/bash
+
+name_pre=("hk" 
+	 "wq52" 
+	 "wq51" 
+	 "wq54"
+	 "dx" 
+	 "rmyy" 
+	 "rmyy1" 
+	 "she3" 
+	 "she2" 
+	 "she1" 
+	 "yze1" 	
+	 "yze3" 
+	 "yze2" 
+	 "dzzwy" 
+	 "kf" 
+	 )
+
+ip_pre=("10.168.90" 
+	"10.65.2" 
+	"10.65.1" 
+	"10.65.4" 
+	"10.176.100" 
+	"10.160.30" 
+	"10.160.26" 
+	"10.148.11" 
+	"10.148.11" 
+	"10.146.3" 
+	"10.137.67" 
+	"10.137.83" 
+	"10.137.83" 
+	"42.62.61" 
+	"192.168.18" 
+	)
+
+valid_ip=("1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16"
+	"1 11 12 2 21 22 3"
+	"130 129"
+	"24 138 139 140 141"
+	"1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24"
+	"65 66 67 68 69 70 71"
+	"1"
+	"1 2 13 14 15"
+	"3 4 5 6 13 14 15 16 17 18 22 23 26 27 31 32 33"
+	"129 130 131 132 133 134 135 136 137 138 139 140 141 142 143"
+	"138 139 140 141 142 129 130 131 132 133 134 135 136 137 143 144 145 146 147 148"
+	"204 212 193 194 213 205"
+	"202 203 210 211 195 196 197 198 199 200 206 214" 
+	"101" 
+	"10 11" 
+	)
+
+function print_help()
+{
+	echo "HELP INFORMATION:"
+	local idx=0
+	while true
+	do
+		if [[ ${name_pre[${idx}]} == "" ]]; then
+			break
+		fi
+		echo ${name_pre[${idx}]} -- ${ip_pre[$idx]} -- ${valid_ip[$idx]}
+		let idx=${idx}+1
+	done
+}
+
+if [[ $1 == "help" ]]; then
+	print_help
+
+	exit 0
+fi
+
+idx=0
+found=0
+for name in ${name_pre[*]}
+do
+	if [[ ${name} == ${1} ]]; then
+		found=1
+		break	
+	else
+		let idx=${idx}+1
+	fi
+
+done
+
+if [[ ${found} -eq 1 ]]; then
+	for vip in ${valid_ip[${idx}]}
+	do
+		if [[ ${vip} == $2 ]]; then
+			found=2
+			break
+		fi
+	done
+fi
+
+if [[ ${found} -ne 2 ]]; then
+	echo -e "not found:bad name pre, $1\n"
+	print_help
+	exit -1
+fi
+
+echo "Login:"${name_pre[${idx}]} ${ip_pre[${idx}]}.$2
+if [[ $3 -eq 1 ]]; then
+	ssh -i /home/baijuncheng/.zb zhubin1@${ip_pre[${idx}]}.$2
+elif [[ $3 -eq 2 ]]; then
+	ssh root@${ip_pre[${idx}]}.$2
+else
+	ssh -A ${ip_pre[${idx}]}.$2
+fi
