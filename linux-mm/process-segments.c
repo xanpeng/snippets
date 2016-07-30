@@ -48,3 +48,17 @@ int main() {
 	printf("static_initialized_var is at address 0x%08x\n\n", &static_initialized_var);
 	return 0;
 }
+
+/*
+====IN STACK====
+the main's stack_var is at address 0xbe2d6474
+the function's stack_var is at address 0xbe2d645c
+====IN HEAP====
+heap_var is at address 0x00602010
+====IN BSS SEGMENT====
+static_var is at address 0x00601048
+global_var is at address 0x0060104c
+====IN DATA SEGMENT====
+global_initialized_var is at address 0x00601030
+*/
+static_initialized_var is at address 0x00601034
