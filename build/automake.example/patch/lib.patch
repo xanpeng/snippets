@@ -1,0 +1,19 @@
+--- configure.ac    2016-05-01 15:07:35.768334350 +0800
++++ configure.ac.new    2016-05-01 15:07:10.017861767 +0800
+@@ -3,7 +3,8 @@
+ 
+AC_PREREQ([2.69])
+AC_INIT([FULL-PACKAGE-NAME], [VERSION], [BUG-REPORT-ADDRESS])
+-AC_CONFIG_SRCDIR([aa.c])
++AM_INIT_AUTOMAKE
++AC_CONFIG_SRCDIR([.])
+AC_CONFIG_HEADERS([config.h])
+ 
+# Checks for programs.
+@@ -15,6 +16,7 @@
+AC_PROG_LN_S
+AC_PROG_MAKE_SET
+AC_PROG_RANLIB
++AC_PROG_LIBTOOL
+ 
+# Checks for libraries
