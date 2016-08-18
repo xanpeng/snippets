@@ -31,6 +31,13 @@ int main(int argc, char **argv)
 }
 
 /*
+# dd if=/dev/zero of=/tmp/4gdisk bs=1M count=4096
+# modprobe loop && losetup /dev/loop0 /tmp/4gdisk
+# mkfs.ext4 /dev/loop0
+# mkdir /xdata && mount -o mand /dev/loop0 /xdata
+# cd /xdata && touch advisory_file && touch mandatory_file
+# chmod g+s,g-x mandatory_file
+
 # (测试advisory lock)
 # ./filelocker advisory_file
  (等待输入)
