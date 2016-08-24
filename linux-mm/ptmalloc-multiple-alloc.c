@@ -82,10 +82,12 @@ void alloc_and_hold(int nr_bytes, int us_hold)
 
     ts_start = clock_get_ms();
     mm = malloc(nr_bytes);
-    memset(mm, 0, nr_bytes);
     ts_diff = clock_get_ms() - ts_start;
     if (ts_diff >= g_max_ms)
         fprintf(stdout, "alloc_and_hold alloc(%dKB) used %dms, will hold for %ums\n", nr_bytes / 1024, ts_diff, us_hold / 1000);
+    memset(mm, 0, nr_bytes);
+    //for (i = 0; i < nr_bytes; i++) mm[i] = 'a';
+    //mm[0] = 'a', mm[nr_bytes-1] = 'a';
 
     usleep(us_hold);
 
