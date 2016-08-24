@@ -65,8 +65,14 @@ unsigned random_at_most(long max)
     return (unsigned)(x / bin_size);
 }
 
+unsigned random_io_latency(void)
+{
+  const unsigned us_min = 5 * 1000;
+  const unsigned us_max = 30 * 1000;
+  return us_min + random_at_most(us_max - us_min);
+}
+
 const unsigned MB = 1024 * 1024;
-const unsigned MAX_LATENCY_US = 1000 * 1000;
 unsigned g_max_ms = 0;
 
 void alloc_and_hold(int nr_bytes, int us_hold)
@@ -79,7 +85,7 @@ void alloc_and_hold(int nr_bytes, int us_hold)
     memset(mm, 0, nr_bytes);
     ts_diff = clock_get_ms() - ts_start;
     if (ts_diff >= g_max_ms)
-        fprintf(stdout, "alloc_and_hold alloc(%d KB) used %dms\n", nr_bytes / 1024, ts_diff);
+        fprintf(stdout, "alloc_and_hold alloc(%dKB) used %dms, will hold for %ums\n", nr_bytes / 1024, ts_diff, us_hold / 1000);
 
     usleep(us_hold);
 
@@ -94,14 +100,14 @@ void alloc_and_hold(int nr_bytes, int us_hold)
 void *thread_io_alloc_mem(void *arg)
 {
     while (1) {
-        alloc_and_hold(random_at_most(2 * MB), random_at_most(MAX_LATENCY_US));
+        alloc_and_hold(random_at_most(2 * MB), random_io_latency());
     }
 }
 
 void *thread_recovery_alloc_mem(void *arg)
 {
     while (1) {
-        alloc_and_hold(4 * MB, random_at_most(MAX_LATENCY_US));
+        alloc_and_hold(4 * MB, random_io_latency());
     }
 }
 
@@ -145,6 +151,18 @@ int main(int argc, char *argv[])
 gcc mulalloc.c -o mulalloc -lpthread -lrt
 for i in {1..12}; do mulalloc 400 0 2000 &  # 400线程分配随机大小[1B~2MB]，0线程分配4M，超过2s打印
 
+0）计时不考虑memset，仅记录malloc的耗时，发现仍然有大量超时的。这说明glibc malloc耗时多，以及mmap申请内存耗时多。
+alloc_and_hold alloc(1029 KB) used 3263ms
+alloc_and_hold alloc(197 KB) used 21867ms
+alloc_and_hold alloc(1804 KB) used 2448ms
+alloc_and_hold alloc(111 KB) used 3246ms
+alloc_and_hold alloc(1004 KB) used 19728ms
+alloc_and_hold alloc(1361 KB) used 2286ms
+alloc_and_hold alloc(1997 KB) used 2453ms
+alloc_and_hold alloc(1581 KB) used 2283ms
+alloc_and_hold alloc(914 KB) used 58210ms
+
+
 1）在注释mallopt时，malloc/free耗时>2s的特别多。每进程rss=1.2G，系统剩余内存15G，观测buddyinfo每个list都有。
 系统整体响应慢，如执行ps感觉明显卡顿，ssh登录特别慢，为什么？perf top发现是因为大量mmap/munmap导致：
  42.55%  libc-2.12.so                        [.] __memset_sse2
@@ -158,7 +176,7 @@ for i in {1..12}; do mulalloc 400 0 2000 &  # 400线程分配随机大小[1B~2MB
   1.42%  [kernel]                            [k] unmap_vmas
 
 2）如果控制alloc内存大小(0, 128KB)，不使用mallopt，同时避开mmap，预计系统响应不会慢。
-实测证明如此，strace看不到mmap，perf top输出：
+实测证明如此，strace -f -q看不到mmap，perf top输出：
  27.08%  libc-2.12.so                 [.] __memset_sse2
   5.11%  [kernel]                     [k] _spin_lock
   3.68%  [kernel]                     [k] clear_page_c_e
@@ -179,4 +197,9 @@ for i in {1..12}; do mulalloc 400 0 2000 &  # 400线程分配随机大小[1B~2MB
   1.04%  [kernel]              [k] list_del
   0.72%  [kernel]              [k] free_pcppages_bulk
   0.64%  [kernel]              [k] down_read_trylock
+
+
+
+根据上面初步测试，设计几组实验，根据是否mallopt，申请内存的大小范围来祝贺，计时不考虑memset，观察系统响应快慢，strace输出，perf top的输出。
+
 */
