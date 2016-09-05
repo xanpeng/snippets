@@ -1,0 +1,26 @@
+// 监控所有进程的收发包情况
+global recv, xmit  
+  
+probe begin {  
+    printf("Starting network capture...Press ^C to terminate\n")  
+}  
+  
+probe netdev.receive {  
+    recv[dev_name, pid(), execname()] <<< length  
+}  
+  
+probe netdev.transmit {  
+    xmit[dev_name, pid(), execname()] <<< length  
+}  
+  
+probe end {  
+    printf("\nCapture terminated\n\n")  
+    printf("%-5s %-15s %-10s %-10s %-10s\n",   
+        "If", "Process", "Pid", "RcvPktCnt", "XmtPktCnt")  
+      
+    foreach([dev, pid, name] in recv) {  
+        recvcnt = @count(recv[dev, pid, name])  
+        xmtcnt =  @count(xmit[dev, pid, name])  
+        printf("%-5s %-15s %-10d %-10d %-10d\n", dev, name, pid, recvcnt, xmtcnt)  
+    }  
+}
