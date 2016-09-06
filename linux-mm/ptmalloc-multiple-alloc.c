@@ -75,6 +75,22 @@ unsigned random_io_latency(void)
 const unsigned MB = 1024 * 1024;
 unsigned g_max_ms = 0;
 
+//如果需要比较时间
+void logger(const char *fmt, ...)
+{
+  char msg[128];
+  struct timeval tv;
+  va_list ap;
+
+  va_start(ap, fmt);
+  vsnprintf(msg, 128, fmt, ap);
+  va_end(ap);
+
+  gettimeofday(&tv, NULL);
+  fprintf(stderr, "%ld: %s\n", tv.tv_sec * 1000000 + tv.tv_usec, msg);
+  fflush(stderr);
+}
+
 void alloc_and_hold(int nr_bytes, int us_hold)
 {
     void *mm;
