@@ -1,0 +1,171 @@
+" related: http://dougblack.io/words/a-good-vimrc.html
+
+""" pathogen
+execute pathogen#infect()
+"let g:pathogen_disabled = []
+"let g:pathogen_blacklist = ['genutils', 'lookupfile', 'bufexplorer', 'vim-autotag']
+"call add(g:pathogen_disabled, 'lookupfile')
+
+"set list!
+"set listchars=tab:>-,extends:>,precedes:<
+let c_space_errors = 1 " show trailing whitespace
+
+"
+" command snippets
+"
+" :%s/\s\+$//e  # removing trailing whitespaces
+"
+
+set shell=/bin/bash       "if fish, taglist & vundle will fail
+set showcmd
+set backspace=eol,start,indent
+set fileencodings=ucs-bom,utf-8,gbk,big5
+set encoding=utf-8
+set completeopt=longest,menu
+set display=lastline      "set non-linewise display
+set nocompatible          "disable VI compatible mode
+"set autochdir             "auto change current directory
+set sessionoptions=curdir "use absolute paths in sessions
+ 
+set ruler
+set wildmenu
+set title       "dynamic title
+set nu          "display line number
+ 
+set magic       "enbale magic matching
+set showmatch   "show matching bracets
+set ignorecase  "ignore case when search things
+set smartcase
+set hlsearch
+set incsearch
+ 
+set autoindent
+set smartindent
+set tabstop=4
+set shiftwidth=4
+set shiftround
+set smarttab
+"set expandtab
+set softtabstop=4
+"set textwidth=79
+"highlight ColorColumn ctermbg=4
+"set colorcolumn=100
+"let &colorcolumn=join(range(120,999),",")
+"set auto-formatting
+set formatoptions+=mM
+set cinoptions=:0,l1,t0,g0 "config c-indenting
+
+filetype plugin indent on
+"autocmd FileType mail set textwidth=72       "set textwidth for mail
+autocmd FileType python set et sta ts=4 sw=4 "use soft tabs for python
+syntax enable
+syntax on
+
+""" mapping and mapleader
+" == modes ==
+" map: for normal, visual, operator pending modes.
+" nmap: for normal mode.
+" vmap: for visual mode.
+" omap: for operator pending mode.
+" imap: for insert only mode.
+" cmap: for command line mode.
+" 
+" == prefix ==
+" nore: non-recursive
+" n: effective in normal mode.
+" v: effective in visual mode.
+" i: effective in insert mode.
+" c: effective in command line mode.
+"
+" ref: http://blog.jasonding.top/, 使用map自定义快捷键
+"
+let mapleader = ","
+
+""" ctags
+" http://stackoverflow.com/questions/11975316/vim-ctags-tag-not-found
+set tags=./tags,tags;/home/xan/workspace
+ 
+""" cscope
+""" use cscope_maps.vim
+"set cscopetag           "use both cscope and ctag
+"set cscopeverbose       "show msg when cscope db added
+set cscopetagorder=1    "use tags for definition search first
+"set cscopequickfix=s-,g-,d-,c-,t-,e-,f-,i- "use quickfix window to show cscope results
+"let autocscope_menus=0  "use my own cscope mappings
+"nmap <C-_>s :cs find s <C-R>=expand("<cword>")<CR><CR>
+"nmap <C-_>g :cs find g <C-R>=expand("<cword>")<CR><CR>
+"nmap <C-_>c :cs find c <C-R>=expand("<cword>")<CR><CR>
+"nmap <C-_>d :cs find d <C-R>=expand("<cword>")<CR><CR> 
+"nmap <C-_>t :cs find t <C-R>=expand("<cword>")<CR><CR>
+"nmap <C-_>e :cs find e <C-R>=expand("<cword>")<CR><CR>
+"nmap <C-_>f :cs find f <C-R>=expand("<cfile>")<CR><CR>
+"nmap <C-_>i :cs find i <C-R>=expand("<cfile>")<CR><CR>
+ 
+""" tab navigation
+"nnoremap tp :tabprevious<CR>
+"nnoremap tn :tabnext<CR>
+"nnoremap to :tabnew<CR>
+"nnoremap tc :tabclose<CR>
+"nnoremap gf <C-W>gf
+"nnoremap <S-f> :tabfirst<CR>  	" first tab
+"nnoremap <S-h> gT		" previous tab
+"nnoremap <S-l> gt		" next tab
+ 
+""" move among windows
+noremap <C-h> <C-W>h
+noremap <C-l> <C-W>l
+noremap <C-j> <C-W>j
+noremap <C-k> <C-W>k
+ 
+""" set up and down non-linewise
+"noremap <Up> gk
+"noremap <Down> gj
+ 
+inoremap ii <ESC> 
+
+""" easymotion
+" http://www.wklken.me/posts/2015/06/07/vim-plugin-easymotion.html
+"	fw: word below
+"	fb: word up
+map , <Plug>(easymotion-prefix)
+"map <Leader><Leader> <Plug>(easymotion-prefix)
+let g:EasyMotion_smartcase = 1
+
+""" unite
+" http://fichugh.blogspot.jp/2016/03/unitevim.html
+" http://bling.github.io/blog/2013/06/02/unite-dot-vim-the-plugin-you-didnt-know-you-need/
+"Unite file : search all file
+"Unite file_rec : search file under pwd
+"Unite buffer ：search buffer
+"Unite buffer file : combination
+
+"nnoremap <C-f> :Unite -start-insert file<CR>  " use ctrlp
+nnoremap <C-b> :Unite buffer<CR>
+nnoremap <space>/ :Unite grep:.<cr>
+
+""" ctrlp
+" http://kien.github.io/ctrlp.vim/
+set runtimepath^=~/.vim/bundle/ctrlp.vim
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip
+
+
+""" tagbar
+let g:tagbar_autofocus=1
+"let g:tagbar_width=60 "default=40
+
+""" bufexplorer
+"let g:bufExplorerDefaultHelp=0 "do not show default help
+"let g:bufExplorerShowRelativePath=1 "show relative paths
+"let g:bufExplorerSortBy='mru' "sort by most recently used
+"let g:bufExplorerSplitRight=1 "split right
+"let g:bufExplorerSplitVertical=1 "split vertically
+"let g:bufExplorerSplitVertSize=30 "split width
+"let g:bufExplorerUseCurrentWindow=1 "open in new window
+"<Leader>bv
+"<Leader>be
+
+""" vim-autotag
+"let g:autotagTagsFile=".tags"
+
+""" commands
+" scriptnames: list all plugins
