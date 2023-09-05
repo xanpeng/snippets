@@ -1,4 +1,4 @@
-my code snippets orgnized in two ways:
+my code snippets organized in two ways:
 
 - languages
 - topics
